@@ -1,0 +1,9 @@
+*.obj
+*.exe
+*.pdb
+*.atsuo
+*.log
+[Bb]in
+[Dd]ebug*/
+obj/
+[Rr]elease*/
