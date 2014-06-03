@@ -23,6 +23,8 @@
 #define sbit(port, pin) port |= (1 << pin);
 #define cbit(port, pin) port &= ~(1 << pin);
 
+#define swap(a, b) { int16_t t = a; a = b; b = t; }
+
 void pcd8544_begin(pcd8544_t* this)
 {
     pcd8544_clear(this);
@@ -80,6 +82,45 @@ void pcd8544_setPixel(pcd8544_t* this, uint8_t x, uint8_t y, uint8_t color)
     }
     
     pcd8544_invalidate(this, x, y, x, y);
+}
+
+
+
+void pcd8544_line(pcd8544_t* this, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
+{
+    int8_t steep = (abs(y1-y0) > abs(x1-x0)) ? 1 : 0;
+    if(steep)
+    {
+        swap(x0, y0);
+        swap(x1, y1);
+    }
+    
+    if(x0 > x1)
+    {
+        swap(x0, x1);
+        swap(y0, y1);
+    }
+    
+    int dErr = abs(y1-y0);
+    int yStep = y0 > y1 ? -1 : 1;
+    int dx = x1 - x0;
+    
+    int err = dx/2;
+    int y = y0;
+    
+    for (uint8_t x = x0; x <= x1; x++)
+    {
+        if(steep) 
+            pcd8544_setPixel(this, y, x, 255);
+        else
+            pcd8544_setPixel(this, x, y,255);
+        err -= dErr;
+        if(err<0)
+        {
+            y += yStep;
+            err += dx;
+        }
+    }
 }
 
 void pcd8544_display(pcd8544_t* this)

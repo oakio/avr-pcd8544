@@ -39,7 +39,7 @@ struct pcd8544
     uint8_t xInvalidateMin;
     uint8_t yInvalidateMin;
     uint8_t xInvalidateMax;
-    uint8_t yInvalidateMax;    
+    uint8_t yInvalidateMax;
 };
 typedef struct pcd8544 pcd8544_t;
 
@@ -47,6 +47,7 @@ void pcd8544_begin        (pcd8544_t* this);
 void pcd8544_invalidate   (pcd8544_t* this, uint8_t xMin, uint8_t yMin, uint8_t xMax, uint8_t yMax);
 void pcd8544_clear        (pcd8544_t* this);
 void pcd8544_setPixel     (pcd8544_t* this, uint8_t x, uint8_t y, uint8_t color);
+void pcd8544_line         (pcd8544_t* this, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
 void pcd8544_display      (pcd8544_t* this);
 
 void pcd8544_putChar      (pcd8544_t* this, uint8_t row, uint8_t col, char symbol);
